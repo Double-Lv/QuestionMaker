@@ -1,0 +1,33 @@
+<h3>
+	{{title}}
+</h3>
+<a href="#/edit/id/0/type/choice" class="btn btn-primary pull-right mb12">添加试题</a>
+<table class="table table-striped table-bordered">
+	<thead>
+		<tr>
+			<td>id</td>
+			<td>类型</td>
+			<td>名称</td>
+			<td>操作</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="q in questionList">
+			<td>{{q.id}}</td>
+			<td>{{q.qtype}}</td>
+			<td>{{q.name}}</td>
+			<td>
+				<!-- <a ui-sref="edit.choice({id:q.id})" href="#" class="btn btn-primary">编辑</a> -->
+				<a href="#/edit/id/{{q.id}}/type/{{q.qtype|qtypestr_en}}" class="btn btn-primary">编辑</a>
+				<a href="#" class="btn btn-primary" ng-click="removeQuestion(q.id)">删除</a>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<ul class="pagination">
+	<li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+	<li class="active"><a href="#">1</a></li>
+	<li class=""><a href="#">2</a></li>
+	<li class=""><a href="#">3</a></li>
+	<li class="disabled"><a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+</ul>
