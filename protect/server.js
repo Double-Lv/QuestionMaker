@@ -15,7 +15,7 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
-
+var questionController = require('./controllers/questionController');
 
 
 app.get('/index', function(req, res){
@@ -58,7 +58,7 @@ app.post('/api/getQuestions', function(req, res){
                 }
             ],
             answer: 1
-        },
+        }, 
         {
             id: 2,
             qtype: 2,
@@ -78,6 +78,4 @@ app.post('/api/getQuestions', function(req, res){
    res.json(result);
 });
 
-app.post('/api/submitQuestion', function(req, res){
-	console.log(req.body);
-});
+app.post('/api/submitQuestion', questionController.save);
