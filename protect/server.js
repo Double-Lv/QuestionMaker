@@ -42,40 +42,6 @@ app.post('/api/getQuestion', function(req, res){
 	res.json(result);
 });
 
-app.post('/api/getQuestions', function(req, res){
-	var result = [
-        {
-            id: 1,
-            qtype: 1,
-            name: '一年级英语选择题',
-            content: '题目的题干：请选择一个你认为正确的：',
-            options: [
-                {
-                    name: '选项a的内容'
-                },
-                {
-                    name: '选项b的内容'
-                }
-            ],
-            answer: 1
-        }, 
-        {
-            id: 2,
-            qtype: 2,
-            name: '一年级英语选择题',
-            content: '题目的题干：请选择一个你认为正确的：',
-            options: [
-                {
-                    name: '选项a的内容'
-                },
-                {
-                    name: '选项b的内容'
-                }
-            ],
-            answer: 1
-        }
-    ]
-   res.json(result);
-});
+app.post('/api/getQuestions', questionController.getQuestions);
 
 app.post('/api/submitQuestion', questionController.save);
