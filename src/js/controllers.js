@@ -2,7 +2,13 @@ app
 .controller('questionListCtrl',['$scope', '$http', 'QuestionService', function($scope, $http, QuestionService) {
     $scope.title = '试题列表';
     QuestionService.getQuestions().success(function(data){
-        $scope.questionList = data;
+        if(data.success){
+            $scope.questionList = data.data;
+        }
+        else{
+            alert(data.error);
+        }
+        
     });
 
     $scope.removeQuestion = function(id){
