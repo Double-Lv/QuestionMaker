@@ -5,7 +5,7 @@
   "devDependencies": {
     "body-parser": "^1.13.2",
     "express": "^4.13.1",
-    "express3-handlebars": "^0.5.2",
+    "express-handlebars": "^0.5.2",
     "gulp": "^3.9.0",
     "gulp-cache": "^0.2.10",
     "gulp-clean": "^0.3.1",
