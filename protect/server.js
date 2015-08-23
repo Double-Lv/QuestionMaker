@@ -7,7 +7,7 @@ app.set('view engine', 'handlebars');
  
 app.listen(3000);
 
-var _rootDir = '/wamp/www/QuestionMaker';
+var _rootDir = '/QuestionMaker';
 
 app.use(express.static(_rootDir));
 

@@ -23,31 +23,12 @@ var Schema = mongodb.mongoose.Schema;
 var Movie = mongodb.mongoose.model("Movie", MovieSchema);
 var MovieDAO = function(){};*/
 
-var CounterSchema = new Schema({
-	_id: String,
-	seq: Number
+var CounterSchema = Schema({
+    _id: {type: String, required: true},
+    seq: { type: Number, default: 0 }
 });
-CounterSchema.statics.findAndModify = function (query, sort, doc, options, callback) {
-  return this.collection.findAndModify(query, sort, doc, options, callback);
-};
 
 var Counter = mongodb.mongoose.model("Counter", CounterSchema);
-
-function getNextSequence(name) {
-	Counter.findAndModify({ _id: name }, [], { $inc: { seq: 1 } }, {}, function (err, counter) {
-		if (err) throw err;
-		console.log('updated, counter is ' + counter.seq);
-	});
-	// var ret = Counter.findAndModify(
-	// 	{
-	// 	query: { _id: name },
-	// 	update: { $inc: { seq: 1 } },
-	// 	new: true
-	// 	}
-	// );
-
-	// return ret.seq;
-}
 
 var QuestionSchema = new Schema({
 	id: String,
@@ -61,14 +42,20 @@ var QuestionSchema = new Schema({
     ],
     answer: String
 });
+QuestionSchema.pre('save', function(next) {
+    var doc = this;
+    Counter.findByIdAndUpdate({_id: 'questionid'}, {$inc: { seq: 1} }, function(error, counter)   {
+        if(error)
+            return next(error);
+        doc.id = counter.seq;
+        next();
+    });
+});
 var Question = mongodb.mongoose.model("Question", QuestionSchema);
 
 var QuestionDAO = function(){};
 //保存试题
 QuestionDAO.prototype.save = function(obj, callback){
-	var newId = getNextSequence('questionid');
-	console.log(newId);
-	return;
 	var instance = new Question(obj);
 	instance.save(function(err){
 		callback(err);
