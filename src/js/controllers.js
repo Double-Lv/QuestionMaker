@@ -45,22 +45,6 @@ app
                 $scope.formData.qtype = 2;
                 $scope.formData.options = null;
                 $scope.formData.answer = [];
-
-                //监听题干内容
-                $scope.$watch('formData.content', function(newValue, oldValue){
-                    newValue = newValue || '';
-                    oldValue = oldValue || '';
-                    var newBlocks = newValue.match(/\$\$/g) || [];
-                    var oldBlocks = oldValue.match(/\$\$/g) || [];
-                    if(newBlocks.length !== oldBlocks.length){
-                        var answer = [];
-                        for(var i=0; i<newBlocks.length; i++){
-                            var a = $scope.formData.answer[i] || (i+1);//把旧值保持到新answer数组中
-                            answer.push(a);
-                        }
-                        $scope.formData.answer = answer;
-                    }
-                });
             break;
         }
     }
@@ -70,6 +54,7 @@ app
         //取到试题数据
         QuestionService.getQuestion(id).success(function(data){
             $scope.formData = data.data;
+            $scope.formData.answer = data.data.answer.split(',');
         });
         
     }
@@ -85,6 +70,24 @@ app
     
     $scope.qtypes = [1,2];
 
+    //监听题干内容
+    if(type == 'block'){
+        $scope.$watch('formData.content', function(newValue, oldValue){
+            newValue = newValue || '';
+            oldValue = oldValue || '';
+            var newBlocks = newValue.match(/\$\$/g) || [];
+            var oldBlocks = oldValue.match(/\$\$/g) || [];
+            if(newBlocks.length !== oldBlocks.length){
+                var answer = [];
+                for(var i=0; i<newBlocks.length; i++){
+                    var a = $scope.formData.answer[i] || (i+1);//把旧值保持到新answer数组中
+                    answer.push(a);
+                }
+                $scope.formData.answer = answer;
+            }
+        });    
+    }
+    
     //删除选项
     $scope.removeOption = function(index){
         $scope.formData.options.splice(index, 1);
