@@ -11,14 +11,24 @@ app
         
     });
 
+    //删除试题
     $scope.removeQuestion = function(id){
-        for(var i=0; i<$scope.questionList.length; i++){
-            var q = $scope.questionList[i];
-            if(q.id===id){
-                $scope.questionList.splice(i, 1);
-                break;
+        QuestionService.remove(id)
+        .success(function(data){
+            if(data.success){
+                for(var i=0; i<$scope.questionList.length; i++){
+                    var q = $scope.questionList[i];
+                    if(q.id===id){
+                        $scope.questionList.splice(i, 1);
+                        break;
+                    }
+                }
             }
-        }
+            else{
+                alert(data.error);
+            }
+        });
+        
     }
 }])
 .controller('questionCtrl', ['$scope', '$http', '$state', '$stateParams', '$location', 'QuestionService', '$filter', function($scope, $http, $state, $stateParams, $location, QuestionService, $filter){
@@ -59,7 +69,7 @@ app
         //编辑
         //取到试题数据
         QuestionService.getQuestion(id).success(function(data){
-            $scope.formData = data;
+            $scope.formData = data.data;
         });
         
     }
@@ -94,7 +104,28 @@ app
 
     //提交
     $scope.submit = function(){
-        QuestionService.submit($scope.formData);
+        if(id!=0){
+            QuestionService.update($scope.formData)
+            .success(function(data){
+                if(data.success){
+                    alert('修改成功！');
+                }
+                else{
+                    alert(data.error);
+                }
+            });
+        }
+        else{
+            QuestionService.submit($scope.formData)
+            .success(function(data){
+                if(data.success){
+                    alert('提交成功！');
+                }
+                else{
+                    alert(data.error);
+                }
+            });
+        }
     }
 
     window.scope = $scope;

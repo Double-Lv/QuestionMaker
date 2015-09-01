@@ -12,7 +12,7 @@ app.filter('qtypestr',function(){
 })
 .filter('qtypestr_en',function(){
     return function(type){
-        switch(type){
+        switch(+type){
             case 1:
                 return 'choice';
             break;
