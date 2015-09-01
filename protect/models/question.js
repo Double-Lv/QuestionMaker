@@ -29,9 +29,8 @@ QuestionSchema.pre('save', function(next) {
         next();
     });
 });
+
 var Question = mongodb.mongoose.model("Question", QuestionSchema);
-
-
 
 
 var QuestionDAO = function(){};
