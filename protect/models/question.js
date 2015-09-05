@@ -3,7 +3,7 @@ var Schema = mongodb.mongoose.Schema;
 
 var CounterSchema = Schema({
     _id: {type: String, required: true},
-    seq: { type: Number, default: 0 }
+    seq: { type: Number, default: 1 }
 });
 
 var Counter = mongodb.mongoose.model("Counter", CounterSchema);
@@ -29,6 +29,7 @@ QuestionSchema.pre('save', function(next) {
         next();
     });
 });
+QuestionSchema.set('toObject', { getters: true });
 
 var Question = mongodb.mongoose.model("Question", QuestionSchema);
 

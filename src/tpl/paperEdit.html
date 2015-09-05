@@ -2,21 +2,29 @@
     <div class="col-sm-8">
         <form class="form-horizontal">
 			<div class="panel panel-info">
-			    <div class="panel-heading">试题信息</div>
+			    <div class="panel-heading">试卷信息</div>
 			    <div class="panel-body">
-			        <div class="form-group">
-			            <label class="col-sm-2 control-label">题型:</label>
-			            <div class="col-sm-3">
-			                <select class="form-control" ng-model="formData.qtype" ng-options="t as t|qtypestr for t in qtypes" ng-change="changeTpl()"></select>
-			            </div>
-			        </div>
 			        <div class="form-group">
 			            <label class="col-sm-2 control-label">名称:</label>
 			            <div class="col-sm-8">
 			                <input type="text" class="form-control" ng-model="formData.name">
 			            </div>
 			        </div>
-			        <div ui-view="editArea"></div>
+			        <div class="form-group">
+			        	<label class="col-sm-2 control-label">选择题目:</label>
+						<div class="col-sm-10">
+							<ul class="list-group" style="max-height:500px;overflow:auto;">
+								<li class="list-group-item" ng-repeat="q in questions">
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" value="{{q.id}}" ng-model="q.checked">
+											{{q.name}}
+										</label>
+									</div>
+								</li>
+							</ul>
+						</div>
+			        </div>
 			        
 			    </div>
 			</div>
@@ -26,16 +34,20 @@
 			        <button class="btn btn-block btn-primary" ng-click="submit()">提交</button>
 			    </div>
 			    <div class="col-sm-3">
-			        <a href="#/questionList" class="btn btn-default btn-block">取消<a/>
+			        <a href="#/paperList" class="btn btn-default btn-block">取消<a/>
 			    </div>
 			</div>
         </form>
     </div>
     <div class="previewarea col-sm-4">
 	    <div class="panel panel-info">
-	        <div class="panel-heading">题目预览</div>
+	        <div class="panel-heading">试卷预览</div>
 	        <div class="panel-body" style="max-height: 500px; overflow-y: auto;">
-	        	<div ui-view="previewArea"></div>
+	        	<ol>
+	        		<li ng-repeat="formData in questions" ng-show="formData.checked">
+	        			<div ui-view="{{formData.qtype|qtypestr_en}}Preview"></div>
+	        		</li>
+	        	</ol>
 	        </div>
 	    </div>
 	</div>

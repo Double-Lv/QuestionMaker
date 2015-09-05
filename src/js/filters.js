@@ -22,6 +22,18 @@ app.filter('qtypestr',function(){
         }
     }
 })
+.filter('qtypestr_en_to_num',function(){
+    return function(type){
+        switch(type){
+            case 'choice':
+                return 1;
+            break;
+            case 'block':
+                return 2;
+            break;
+        }
+    }
+})
 .filter('optionstr', function(){
 	return function(index){
 		return String.fromCharCode(index+65);

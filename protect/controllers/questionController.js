@@ -1,4 +1,4 @@
-var Question = require('./../models/question.js');
+var Question = require('../models/question');
 
 //统一回调函数
 var callback = function(req, res, err, data){
