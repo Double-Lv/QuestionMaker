@@ -52,11 +52,22 @@ QuestionDAO.prototype.update = function(obj, callback){
 
 //获取试题列表
 QuestionDAO.prototype.list = function(pageNo, pageSize, callback){
-	Question.count(function(err, count){
-		Question.find({}, null, {skip: (pageNo-1)*pageSize, limit: pageSize, sort: {'id': 1} }, function(err, questions){
-			callback(false, {questions: questions, total: count, pageNo: pageNo});
+	//如果只传入回调函数，则返回所有数据
+	var arg = arguments[0];
+	if(typeof arg == 'function'){
+		Question.find(function(err, questions){
+			arg(false, questions);
 		});
-	});
+	}
+	//否则返回分页数据
+	else{
+		Question.count(function(err, count){
+			Question.find({}, null, {skip: (pageNo-1)*pageSize, limit: pageSize, sort: {'id': 1} }, function(err, questions){
+				callback(false, {questions: questions, total: count, pageNo: pageNo});
+			});
+		});
+	}
+	
 }
 
 //根据id获取试题
