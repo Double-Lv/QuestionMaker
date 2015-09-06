@@ -13,7 +13,9 @@ var callback = function(req, res, err, data){
 
 module.exports = {
 	getPapers: function(req, res){
-		Paper.list(function(err, data){
+		var pageNo = req.body.pageNo;
+		var pageSize = req.body.pageSize;
+		Paper.list(pageNo, pageSize, function(err, data){
 			callback(req, res, err, data);
 		});
 	},

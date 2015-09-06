@@ -1,14 +1,27 @@
 app
 .controller('questionListCtrl',['$scope', 'QuestionService', function($scope, QuestionService) {
-    QuestionService.getQuestions().success(function(data){
-        if(data.success){
-            $scope.questionList = data.data;
-        }
-        else{
-            alert(data.error);
-        }
-        
-    });
+    var getList = function(pageNo, pageSize){
+        QuestionService.getQuestions(pageNo, pageSize).success(function(data){
+            if(data.success){
+                $scope.questionList = data.data.questions;
+                //分页数据
+                $scope.pageObject.itemsCount = data.data.total;
+            }
+            else{
+                alert(data.error);
+            }
+        });
+    }
+    $scope.pageObject = {
+        itemsCount: 0,
+        pageSize: 3,
+        pageNo: 1
+    }
+    $scope.pageFunction = function(){
+        getList($scope.pageObject.pageNo, $scope.pageObject.pageSize);
+    }
+    
+    getList($scope.pageObject.pageNo, $scope.pageObject.pageSize);
 
     //删除试题
     $scope.removeQuestion = function(id){
@@ -28,6 +41,8 @@ app
             }
         });
     }
+
+    window.scope = $scope; //debug
 }])
 .controller('questionCtrl', ['$scope', '$rootScope', '$http', '$location', 'QuestionService', '$filter', function($scope, $rootScope, $http, $location, QuestionService, $filter){
     var id = $rootScope.$state.params.id;
@@ -145,15 +160,30 @@ app
 
     window.scope = $scope; //debug
 }])
-.controller('paperListCtrl',['$scope', 'PaperService', function($scope, PaperService) {
-    PaperService.getPapers().success(function(data){
-        if(data.success){
-            $scope.paperList = data.data;
-        }
-        else{
-            alert(data.error);
-        }
-    });
+.controller('paperListCtrl',['$scope', 'PaperService', function($scope, PaperService){
+    var getList = function(pageNo, pageSize){
+        PaperService.getPapers(pageNo, pageSize).success(function(data){
+            if(data.success){
+                $scope.paperList = data.data.papers;
+                //分页数据
+                $scope.pageObject.itemsCount = data.data.total;
+            }
+            else{
+                alert(data.error);
+            }
+        });
+    }
+    $scope.pageObject = {
+        itemsCount: 0,
+        pageSize: 3,
+        pageNo: 1
+    }
+    $scope.pageFunction = function(){
+        getList($scope.pageObject.pageNo, $scope.pageObject.pageSize);
+    }
+    
+    getList($scope.pageObject.pageNo, $scope.pageObject.pageSize);
+
     //删除试卷
     $scope.removePaper = function(id){
         PaperService.remove(id)
@@ -172,6 +202,8 @@ app
             }
         });
     }
+
+    window.scope = $scope; //debug
 }])
 .controller('paperCtrl', ['$scope', '$rootScope', '$http', '$location', 'PaperService', function($scope, $rootScope, $http, $location, PaperService){
         var id = $rootScope.$state.params.id;

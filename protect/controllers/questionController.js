@@ -28,7 +28,9 @@ module.exports = {
 	},
 	//获取试题列表
 	getQuestions: function(req, res){
-		Question.list(function(err, data){
+		var pageNo = req.body.pageNo;
+		var pageSize = req.body.pageSize;
+		Question.list(pageNo, pageSize, function(err, data){
 			callback(req, res, err, data);
 		});
 	},

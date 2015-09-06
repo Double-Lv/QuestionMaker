@@ -11,8 +11,8 @@ app
 	}
 
     //获取试题列表
-    this.getQuestions = function(){
-        return $http.post('/api/getQuestions');
+    this.getQuestions = function(pageNo, pageSize){
+        return $http.post('/api/getQuestions', {pageNo: pageNo, pageSize: pageSize});
     }
 
     //编辑
@@ -27,8 +27,8 @@ app
 }])
 .service('PaperService', ['$http', function($http){
 	//获取试卷列表
-	this.getPapers = function(){
-		return $http.post('/api/getPapers');
+	this.getPapers = function(pageNo, pageSize){
+		return $http.post('/api/getPapers', {pageNo: pageNo, pageSize: pageSize});
 	}
 
 	//根据id获取试卷

@@ -44,9 +44,11 @@ PaperDAO.prototype.update = function(obj, callback){
 }
 
 //获取试卷列表
-PaperDAO.prototype.list = function(callback){
-	Paper.find(function(err, papers){
-		callback(false, papers);
+PaperDAO.prototype.list = function(pageNo, pageSize, callback){
+	Paper.count(function(err, count){
+		Paper.find({}, null, {skip: (pageNo-1)*pageSize, limit: pageSize, sort: {'id': 1} }, function(err, papers){
+			callback(false, {papers: papers, total: count, pageNo: pageNo});
+		});
 	});
 }
 

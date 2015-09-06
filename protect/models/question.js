@@ -51,9 +51,11 @@ QuestionDAO.prototype.update = function(obj, callback){
 }
 
 //获取试题列表
-QuestionDAO.prototype.list = function(callback){
-	Question.find(function(err, questions){
-		callback(false, questions);
+QuestionDAO.prototype.list = function(pageNo, pageSize, callback){
+	Question.count(function(err, count){
+		Question.find({}, null, {skip: (pageNo-1)*pageSize, limit: pageSize, sort: {'id': 1} }, function(err, questions){
+			callback(false, {questions: questions, total: count, pageNo: pageNo});
+		});
 	});
 }
 
