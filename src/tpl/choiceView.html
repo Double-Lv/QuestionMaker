@@ -2,7 +2,7 @@
 <ul class="list-unstyled">
 	<li ng-repeat="o in formData.options" ng-class="{'text-success': $index==formData.answer}">
 		<label class="radio-inline">
-            <input type="radio" name="rightanswer2" ng-checked="$index==formData.answer">
+            <input type="radio" name="q_{{formData.id}}" ng-checked="$index==formData.answer">
             {{$index | optionstr}}. {{o.name}}
         </label>
 	</li>

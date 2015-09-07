@@ -294,4 +294,4 @@ app
         });
 
         window.scope = $scope; //debug
-}])
+}]);

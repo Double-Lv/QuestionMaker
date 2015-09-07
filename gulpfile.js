@@ -6,27 +6,29 @@ var gulp = require('gulp'),
     concat = require('gulp-concat'),
     htmlmin = require('gulp-htmlmin'),
     cache = require('gulp-cache'),
-    imagemin = require('gulp-imagemin');
+    imagemin = require('gulp-imagemin'),
+    modify = require('gulp-modify');
 
 gulp.task('js', function(){
     gulp.src('./src/js/*.js')
-    .pipe(concat('Bookstory.min.js'))
+    .pipe(concat('QuestionMaker.min.js'))
     .pipe(uglify({
+        mangle: false,
         compress: {
             drop_console: true
+        }
+    }))
+    .pipe(modify({
+        fileModifier: function(file, contents) {
+            return contents.replace(/\/src\//g, '/dist/');
         }
     }))
     .pipe(gulp.dest('./dist/js'));
 });
 
-gulp.task('framework', function(){
-    gulp.src(['./src/framework/**/*.min.js', './src/framework/**/*.min.css'])
-    .pipe(gulp.dest('./dist/framework'));
-
-    gulp.src('./src/framework/*.js')
-    .pipe(uglify())
-    .pipe(rename({ suffix: '.min' }))
-    .pipe(gulp.dest('./dist/framework'));
+gulp.task('lib', function(){
+    gulp.src(['./src/lib/**/*', './src/lib/**/*'])
+    .pipe(gulp.dest('./dist/lib'));
 });
 
 gulp.task('css', function(){
@@ -53,8 +55,21 @@ gulp.task('clean', function() {
     .pipe(clean({force: true}));
 });
 
+gulp.task('modify', function(){
+    setTimeout(function(){
+        gulp.src('./dist/index.html')
+        .pipe(modify({
+            fileModifier: function(file, contents) {
+                return contents.replace(/\/src\//g, '/dist/').replace(/<!--\{main\}-->.*<!--\{endmain\}-->/g, '<script src="/dist/js/QuestionMaker.min.js"></scirpt>').replace(/base.css/, 'base.min.css');
+            }
+        }))
+        .pipe(gulp.dest('./dist'));
+    }, 200);
+    
+});
+
 gulp.task('default', ['clean'], function() {
     setTimeout(function(){
-        gulp.start(['js', 'framework', 'css', 'html', 'image']);
+        gulp.start(['js', 'lib', 'css', 'html', 'modify']);
     }, 100);
 });
