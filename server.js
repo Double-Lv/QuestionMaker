@@ -2,8 +2,8 @@ var express = require('express');
 var app = express();
 app.listen(3000);
 
-var _rootDir = '/wamp/www/QuestionMaker';
-//var _rootDir = '/QuestionMaker';
+var _rootDir = __dirname;
+var protectDir = _rootDir + '/protect/';
 
 app.use(express.static(_rootDir));
 
@@ -11,8 +11,8 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
-var questionController = require('./controllers/questionController');
-var paperController = require('./controllers/paperController');
+var questionController = require(protectDir + 'controllers/questionController');
+var paperController = require(protectDir + 'controllers/paperController');
 
 //注册路由
 app.get('/', function(req, res){
