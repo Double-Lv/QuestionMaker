@@ -30,3 +30,11 @@ app.post('/api/getPaperQuestions', paperController.getPaperQuestions);
 app.post('/api/submitPaper', paperController.save);
 app.post('/api/updatePaper', paperController.update);
 app.post('/api/removePaper', paperController.remove);
+
+app.use(function(req, res, next) {
+	res.status(404).sendFile(_rootDir+'/src/404.html');
+});
+app.use(function(err, req, res, next) {
+	console.error(err.stack);
+	res.status(500).send('500 Error');
+});
