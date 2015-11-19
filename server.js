@@ -18,18 +18,22 @@ var paperController = require(protectDir + 'controllers/paperController');
 app.get('/', function(req, res){
     res.sendFile(_rootDir+'/src/index.html');
 });
-app.post('/api/getQuestion', questionController.getQuestion);
-app.post('/api/getQuestions', questionController.getQuestions);
-app.post('/api/submitQuestion', questionController.save);
-app.post('/api/updateQuestion', questionController.update);
-app.post('/api/removeQuestion', questionController.remove);
 
-app.post('/api/getPapers', paperController.getPapers);
-app.post('/api/getPaper', paperController.getPaper);
-app.post('/api/getPaperQuestions', paperController.getPaperQuestions);
-app.post('/api/submitPaper', paperController.save);
-app.post('/api/updatePaper', paperController.update);
-app.post('/api/removePaper', paperController.remove);
+var apiRouter = express.Router();
+apiRouter.post('/getQuestion', questionController.getQuestion);
+apiRouter.post('/getQuestions', questionController.getQuestions);
+apiRouter.post('/submitQuestion', questionController.save);
+apiRouter.post('/updateQuestion', questionController.update);
+apiRouter.post('/removeQuestion', questionController.remove);
+apiRouter.post('/getPapers', paperController.getPapers);
+apiRouter.post('/getPaper', paperController.getPaper);
+apiRouter.post('/getPaperQuestions', paperController.getPaperQuestions);
+apiRouter.post('/submitPaper', paperController.save);
+apiRouter.post('/updatePaper', paperController.update);
+apiRouter.post('/removePaper', paperController.remove);
+
+app.use('/api', apiRouter);
+
 
 app.use(function(req, res, next) {
 	res.status(404).sendFile(_rootDir+'/src/404.html');
